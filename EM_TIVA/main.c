@@ -3,6 +3,8 @@
  * main.c
  */
 
+// here stays a comment
+
 #include "../tiva_headers.h"
 #include "hal_init.h"
 #include "hal_gpio.h"
