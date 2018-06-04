@@ -84,7 +84,7 @@ void halGetUart1Data()
 {
     uint32_t uart_status = 0;
     static uint8_t cnt_rx = 0;
-    uint16_t cnt_delete = 0, wait_next = 0;
+    uint16_t cnt_delete = 0;// wait_next = 0;
 
     if(uart_status_.RxData.is_empty)
     {
