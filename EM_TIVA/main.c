@@ -2,9 +2,6 @@
 /**
  * main.c
  */
-// Test Github auf Herz und Nieren ;-)
-
-// here stays a comment
 
 #include "../tiva_headers.h"
 #include "hal_init.h"
