@@ -3,6 +3,8 @@
  * main.c
  */
 
+// test comment - changes in .gitignore
+
 #include "../tiva_headers.h"
 #include "hal_init.h"
 #include "hal_gpio.h"
