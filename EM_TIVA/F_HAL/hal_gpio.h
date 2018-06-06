@@ -17,8 +17,8 @@
 #define THROTTLE        GPIO_PIN_7
 
 /* ~~~~~~~~~~~~~~~~~~~~ PORT B ~~~~~~~~~~~~~~~~~~~~ */
-#define US1_SIGNAL_OUT  GPIO_PIN_0
-#define US2_SIGNAL_OUT  GPIO_PIN_1
+#define US1_SIGNAL_OUT  GPIO_PIN_0      //T2CCP0 - Timer A
+#define US2_SIGNAL_OUT  GPIO_PIN_1      //T2CCP1 - Timer B
 #define MOTION_I2C_SCL  GPIO_PIN_2
 #define MOTION_I2C_SDA  GPIO_PIN_3
 #define RADAR_SPI_SCLK  GPIO_PIN_4
