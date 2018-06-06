@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>EM_1_TIVA_Git</name>
+	<name>EM_1_TIVA_local</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -28,13 +28,13 @@
 		<link>
 			<name>driverlib.lib</name>
 			<type>1</type>
-			<locationURI>TIVAWARE_INSTALL/driverlib/ccs/Debug/driverlib.lib</locationURI>
+			<locationURI>TIVA_WARE_ROOT/driverlib/ccs/Debug/driverlib.lib</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>
 		<variable>
-			<name>TIVAWARE_INSTALL</name>
-			<value>file:/C:/ti/TivaWare_C_Series-2.1.4.178</value>
+			<name>TIVA_WARE_ROOT</name>
+			<value>file:/D:/FH%20Joanneum/ECE16/Semester4/EM/TivaWare</value>
 		</variable>
 	</variableList>
 </projectDescription>
