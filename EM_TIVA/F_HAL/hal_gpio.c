@@ -57,6 +57,7 @@ void configPort_A()
 
     //enable US2 Driver Pin - config as output
     GPIOPinTypeGPIOOutput(GPIO_PORTA_BASE, US2_DRIVER_EN);
+    GPIOPinWrite(GPIO_PORTA_BASE, US2_DRIVER_EN, US2_DRIVER_EN);       // enable US2
 }
 
 void configPort_B()
@@ -100,6 +101,7 @@ void configPort_D()
 
     //enable US1 Driver Pin - config as output
     GPIOPinTypeGPIOOutput(GPIO_PORTD_BASE, US1_DRIVER_EN);
+    GPIOPinWrite(GPIO_PORTD_BASE, US1_DRIVER_EN, US1_DRIVER_EN);    //enable US1
 
     //Debug of PWM0 - Interrupt
     //Test-Pin for ISR of PWM0 Interrupt
