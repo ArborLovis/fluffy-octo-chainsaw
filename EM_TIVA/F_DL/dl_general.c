@@ -7,6 +7,8 @@
 
 #include "dl_general.h"
 
+volatile Sensor sensor_data_;
+
 void dlSetSteering(int16_t ctr_val)
 {
     int pwm_value = 0;

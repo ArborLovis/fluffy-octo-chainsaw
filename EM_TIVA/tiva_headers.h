@@ -26,5 +26,6 @@
 #include "driverlib/pwm.h"
 #include "driverlib/ssi.h"
 #include "driverlib/uart.h"
+#include "driverlib/adc.h"
 
 #endif /* TIVA_HEADERS_H_ */

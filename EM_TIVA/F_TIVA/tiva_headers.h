@@ -24,5 +24,6 @@
 #include "driverlib/timer.h"
 #include "driverlib/interrupt.h"
 #include "driverlib/pwm.h"
+#include "driverlib/adc.h"
 
 #endif /* TIVA_HEADERS_H_ */

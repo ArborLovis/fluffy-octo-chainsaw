@@ -117,6 +117,14 @@ void configPort_E()
 
     //controlling pins of the US module - for sending an impulse (burst mode)
     GPIOPinTypeGPIOOutput(GPIO_PORTE_BASE, US1_SIGNAL_IN | US2_SIGNAL_IN);
+
+    //set analog inputs
+    GPIOPinTypeGPIOInput(GPIO_PORTE_BASE, VBAT_MEASURE);
+    GPIOPinTypeGPIOInput(GPIO_PORTE_BASE, IR1_SENSE_OUT);
+    GPIOPinTypeGPIOInput(GPIO_PORTE_BASE, IR2_SENSE_OUT);
+    GPIOPinTypeGPIOInput(GPIO_PORTE_BASE, IR3_SENSE_OUT);
+    GPIOPinTypeGPIOInput(GPIO_PORTE_BASE, RADAR_IF1);
+    GPIOPinTypeGPIOInput(GPIO_PORTE_BASE, RADAR_IF2);
 }
 
 void configPort_F()

@@ -20,7 +20,46 @@
 #define MAX_FPW_ESC      10000
 #define MAX_BRAKE_ESC    6250
 
+#define MAX_RPM_BUFFER 11
+#define NUM_CHANNEL     8
+
 typedef enum speed_mode {FORWARD, BACKWARD, BRAKE} SpeedMode;
+
+typedef struct
+{
+    struct
+    {
+        unsigned long cnt_rpm_fwd;          //all over count forward
+        unsigned long cnt_rpm_bwd;          //all over count backward
+        unsigned char direction;            //forwards or backwards
+        int speed;                          //mm per sec
+        unsigned long rpm_data_buffer_[MAX_RPM_BUFFER];            //RPM data buffer
+        unsigned short capture_of;            //Overflow capture flag
+
+    }RPM;
+
+    union
+    {
+       unsigned char R;
+       struct
+       {
+           unsigned char ADCrdy:1;      //if adc data is ready, this bit will be set
+           unsigned char AdcDummy:7;
+       }B;
+    }Status;
+
+    uint32_t adc_values[NUM_CHANNEL];
+
+    struct
+    {
+        unsigned int in_mean_value_right;
+        unsigned int in_mean_value_left;
+        unsigned int in_mean_value_front;
+        unsigned int in_mean_value_vbat;
+    }AdcMeanValues;
+
+}Sensor;
+
 
 /*  Name:           dlSetSteering
  *  Parameter:      int16_t ctr_val
