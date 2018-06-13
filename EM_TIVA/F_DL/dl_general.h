@@ -50,13 +50,18 @@ typedef struct
 
     uint32_t adc_values[NUM_CHANNEL];
 
+    unsigned int adc_mean_values[NUM_CHANNEL];
+
     struct
     {
-        unsigned int in_mean_value_right;
-        unsigned int in_mean_value_left;
-        unsigned int in_mean_value_front;
-        unsigned int in_mean_value_vbat;
-    }AdcMeanValues;
+        bool us1_data_ready;
+        bool us2_data_ready;
+        unsigned int timer_cnt_us1;
+        unsigned int timer_cnt_us2;
+        unsigned int distance_us1;
+        unsigned int distance_us2;
+    }Sonic;
+
 
 }Sensor;
 

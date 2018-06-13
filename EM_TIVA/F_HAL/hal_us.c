@@ -7,6 +7,7 @@
 #include "hal_us.h"
 #include "hal_gpio.h"
 #include "tiva_headers.h"
+#include "hal_timer2.h"
 
 //Note: PE4: Module 0; PWM 4; Generator 2
 //      PE5: Module 0; PWM 5; Generator 2
@@ -90,6 +91,7 @@ void PWM0_Int_handler()
         if(--burst_cnt == 0)
         {
             PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, false); //disable selected output states
+            halStartTimer2_Both();  //start time measurement of the sonic transit time
             burst_cnt = BURST_CNT_LEN;
             burst_finished_ = 1;
         }
