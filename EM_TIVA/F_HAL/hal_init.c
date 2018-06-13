@@ -18,10 +18,10 @@ void hal_init()
 {
     halSysClkInit();
     halGpioInit();
-    halPWMInit();
+    //halPWMInit();
     halUsInit();
-    halSsi1Int();
-    halUart1Init();
-    halTimer2Init();
+    //halSsi1Int();
+    //halUart1Init();
+    //halTimer2Init();
     //while(!IntMasterEnable());  //wait until interrupts are enabled, global bit
 }

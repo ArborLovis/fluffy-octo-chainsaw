@@ -45,12 +45,17 @@ void halUsInit()
     PWMPulseWidthSet(PWM0_BASE, PWM_OUT_4, CNT_WIDTH_US);
     PWMPulseWidthSet(PWM0_BASE, PWM_OUT_5, CNT_WIDTH_US);
 
+    //PWMGenPeriodSet(PWM0_BASE, PWM_GEN_2, 16666);     //25
+    //PWMPulseWidthSet(PWM0_BASE, PWM_OUT_4, 1999);
+    //PWMPulseWidthSet(PWM0_BASE, PWM_OUT_5, 1999);
+
     //enable PWM0 Interrupt
-    IntEnable(INT_PWM0_2);
+    /*IntEnable(INT_PWM0_2);
     PWMIntEnable(PWM0_BASE, PWM_INT_GEN_2); // |PWM_INT_CNT_ZERO
     PWMGenIntTrigEnable(PWM0_BASE, PWM_GEN_2, PWM_TR_CNT_LOAD | PWM_INT_CNT_LOAD);  //enable interrupt on load and set trigger to load
     PWMGenIntClear(PWM0_BASE, PWM_GEN_2, PWM_INT_CNT_LOAD);   //clear interrupt flags, just to be sure
     PWMGenIntRegister(PWM0_BASE, PWM_GEN_2, PWM0_Int_handler);      //name of function is equal to the address
+    */
 
     PWMGenEnable(PWM0_BASE, PWM_GEN_2);                             //enable PWM Generator
     PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, true); //enable selected output states

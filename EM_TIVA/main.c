@@ -34,16 +34,25 @@ void main()
     uint8_t data_len = 0;
 
     hal_init();
-    dlLcdInit();
+    //dlLcdInit();
 
-    PWMPulseWidthSet(PWM1_BASE, PWM_OUT_3, 1999);
-    PWMOutputState(PWM1_BASE, PWM_OUT_3_BIT, false); //enable selected output states
+   // PWMPulseWidthSet(PWM1_BASE, PWM_OUT_3, 1999);
+   // PWMOutputState(PWM1_BASE, PWM_OUT_3_BIT, false); //enable selected output states
 
     //dlSetChannelRF(CHANNEL_ADR);
     //dlSetCarAddress(CAR_NODE_ADR);
 
     while(1)
     {
+        //PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, false); //enable selected output states
+        PWMGenDisable(PWM0_BASE, PWM_GEN_2);
+        SysCtlDelay(106667);   //simulate wait state for answer of the us module
+        //PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, true); //enable selected output states
+        PWMGenEnable(PWM0_BASE, PWM_GEN_2);
+        SysCtlDelay(1000);   //simulate wait state for answer of the us module
+    }
+}
+    /*
         //****************** PWM US Test - Begin ******************
         if(halIsBurstFinished())
         {
@@ -160,7 +169,7 @@ void main()
         if(++cnt == 4)
             cnt = 0;
 */
-
+/*
         if(!dir)
         {
             dlSetSteering(pwm_ctr);
@@ -212,3 +221,4 @@ void main()
 
     }
  */
+
