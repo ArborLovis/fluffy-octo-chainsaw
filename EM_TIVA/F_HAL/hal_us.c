@@ -19,11 +19,14 @@
 void PWM0_Int_handler();
 void halResetBurstIndicator();
 
-unsigned short burst_finished_ = 0;
+static unsigned short burst_finished_ = 0;
+static unsigned short us_burst_control_ = 0;
 
 
 void halUsInit()
 {
+    us_burst_control_ = 0;
+    burst_finished_ = 1;
     //enable pwm module 0 and wait until module works satisfied
     //
     SysCtlPeripheralEnable(SYSCTL_PERIPH_PWM0);
@@ -48,13 +51,14 @@ void halUsInit()
 
     //enable PWM0 Interrupt
     IntEnable(INT_PWM0_2);
-    PWMIntEnable(PWM0_BASE, PWM_INT_GEN_2); // |PWM_INT_CNT_ZERO
+    PWMIntEnable(PWM0_BASE, PWM_INT_GEN_2); // |PWM_INT_CNT_ZERO // PWM_TR_CNT_LOAD
     PWMGenIntTrigEnable(PWM0_BASE, PWM_GEN_2, PWM_TR_CNT_LOAD | PWM_INT_CNT_LOAD);  //enable interrupt on load and set trigger to load
     PWMGenIntClear(PWM0_BASE, PWM_GEN_2, PWM_INT_CNT_LOAD);   //clear interrupt flags, just to be sure
     PWMGenIntRegister(PWM0_BASE, PWM_GEN_2, PWM0_Int_handler);      //name of function is equal to the address
+    //PWMIntDisable(PWM0_BASE, PWM_INT_GEN_2);
 
-    PWMGenEnable(PWM0_BASE, PWM_GEN_2);                             //enable PWM Generator
-    PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, true); //enable selected output states
+    //PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, true); //enable selected output states
+    //PWMGenEnable(PWM0_BASE, PWM_GEN_2);                             //enable PWM Generator
 }
 
 void halStartBurstModeUS()
@@ -62,6 +66,8 @@ void halStartBurstModeUS()
     if(halIsBurstFinished())
     {
         halResetBurstIndicator();
+        //PWMGenEnable(PWM0_BASE, PWM_GEN_2);
+        us_burst_control_ = 1;
         PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, true); //enable selected output states
     }
 }
@@ -82,30 +88,72 @@ void halResetBurstIndicator()
 
 void PWM0_Int_handler()
 {
-    static unsigned short burst_cnt = BURST_CNT_LEN;
-
-    if(PWM_INT_CNT_LOAD & PWMGenIntStatus(PWM0_BASE, PWM_GEN_2 , true))
+    if(us_burst_control_)
     {
-        PWMGenIntClear(PWM0_BASE, PWM_GEN_2, PWM_INT_CNT_LOAD);   //clear interrupt flag
+        static unsigned short burst_cnt = BURST_CNT_LEN;
 
-        if(--burst_cnt == 0)
+        if(PWM_INT_CNT_LOAD & PWMGenIntStatus(PWM0_BASE, PWM_GEN_2 , true))
         {
-            PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, false); //disable selected output states
-            halStartTimer2_Both();  //start time measurement of the sonic transit time
-            burst_cnt = BURST_CNT_LEN;
-            burst_finished_ = 1;
-        }
-        else
-        {
-            if(burst_cnt > BURST_CNT_LEN)
+            PWMGenIntClear(PWM0_BASE, PWM_GEN_2, PWM_INT_CNT_LOAD);   //clear interrupt flag
+
+            if(--burst_cnt == 0)
             {
-                burst_cnt = BURST_CNT_LEN;  //safety check
+                PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, false); //disable selected output states
+                //
+                //PWMIntDisable(PWM0_BASE, PWM_INT_GEN_2);
+                IntDisable(INT_PWM0_2);
+                PWMIntDisable(PWM0_BASE, PWM_INT_GEN_2);
+                PWMGenDisable(PWM0_BASE, PWM_GEN_2);
+                halStartTimer2_Both();  //start time measurement of the sonic transit time
+                burst_cnt = BURST_CNT_LEN;
+                burst_finished_ = 1;
+                us_burst_control_ = 0;
             }
-            burst_finished_ = 0;
+            else
+            {
+                if(burst_cnt > BURST_CNT_LEN)
+                {
+                    burst_cnt = BURST_CNT_LEN;  //safety check
+                }
+                if(burst_finished_)
+                    burst_finished_ = 0;
+            }
         }
+    }
+}
+
+unsigned short halStartMeasurementUS(SonicNbr choosen_us)
+{
+    if(halIsBurstFinished())
+    {
+        halResetBurstIndicator();
+        halStopTimer2_Both();
+        GPIOIntDisable(GPIO_PORTB_BASE, US1_SIGNAL_OUT);
+        GPIOIntDisable(GPIO_PORTB_BASE, US2_SIGNAL_OUT);
+        us_burst_control_ = 1;
+
+        if(choosen_us == US_1)
+            PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT, true); //enable hardware PWM for US1
+        else if(choosen_us == US_2)
+            PWMOutputState(PWM0_BASE, PWM_OUT_5_BIT, true); //enable hardware PWM for US2
+        else if(choosen_us == BOTH)
+            PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, true); //enable hardware PWM for both US
+
+        IntEnable(INT_PWM0_2);
+        PWMIntEnable(PWM0_BASE, PWM_INT_GEN_2);
+
+        //PWMGenIntRegister(PWM0_BASE, PWM_GEN_2, PWM0_Int_handler);
+        PWMGenEnable(PWM0_BASE, PWM_GEN_2);
+        return 1;
     }
     else
-    {
-        //other interrupt occurred -> will be ignored
-    }
+        return 0;
+
+}
+
+void halStartUS2Measurement()
+{
+    halResetBurstIndicator();
+    us_burst_control_ = 1;
+    PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, true); //enable selected output states
 }

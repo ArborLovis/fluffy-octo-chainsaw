@@ -19,10 +19,14 @@
 #define BURST_CNT_LEN   40
 
 
+typedef enum sonic_nbr {US_1, US_2, BOTH} SonicNbr;
+
 /* ~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~ */
 
 void halUsInit();
 void halStartBurstModeUS();
 unsigned short halIsBurstFinished();
+unsigned short halStartMeasurementUS(SonicNbr choosen_us);
+void halStartUS2Measurement();
 
 #endif /* F_HAL_HAL_US_H_ */

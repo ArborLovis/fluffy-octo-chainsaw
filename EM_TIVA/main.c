@@ -15,6 +15,7 @@
 #include "dl_general.h"
 #include "dl_RF_Module.h"
 #include "dl_LCD.h"
+#include "dl_us.h"
 
 extern COM_Status uart_status_;
 extern uint8_t switch_backlight_;
@@ -29,6 +30,7 @@ void main()
     uint8_t lock = 0, lock2 = 0;
     uint8_t lock_old = 0, lock_old2 = 0;
 
+    short debug = 1;
 
     uint8_t uart_load[128] = {};
     uint8_t data_len = 0;
@@ -45,10 +47,14 @@ void main()
     while(1)
     {
         //****************** PWM US Test - Begin ******************
-        if(halIsBurstFinished())
+        uint32_t dist1 = dlGetDistance_US1();
+        uint32_t dist2 = dlGetDistance_US2();
+        if(++debug >= 10)
         {
-            halStartBurstModeUS();
+            debug = 0;
+            halStartMeasurementUS(BOTH);
             SysCtlDelay(100000);   //simulate wait state for answer of the us module
+            SysCtlDelay(1000);
         }
 
         //****************** PWM US Test - End   ******************
