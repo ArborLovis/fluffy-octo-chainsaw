@@ -19,6 +19,8 @@
 extern COM_Status uart_status_;
 extern uint8_t switch_backlight_;
 extern uint8_t is_switch_active;
+extern int pwm_burst_cnt_;
+extern unsigned short burst_finished_;
 
 void main()
 {
@@ -33,6 +35,7 @@ void main()
     uint8_t uart_load[128] = {};
     uint8_t data_len = 0;
 
+    int xyz = 1;
     hal_init();
     //dlLcdInit();
 
@@ -44,12 +47,27 @@ void main()
 
     while(1)
     {
+        if(burst_finished_)
+        {
+            burst_finished_ = 0;
+            pwm_burst_cnt_ = 0;
+            SysCtlDelay(406667);
+            //SysCtlDelay(16000);
+            //PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, true); //enable selected output states
+            //PWMIntEnable(PWM0_BASE, PWM_INT_GEN_2);
+            //PWMGenIntTrigEnable(PWM0_BASE, PWM_GEN_2, PWM_INT_CNT_LOAD);    //enable interrupt on load and set trigger to load
+            if(xyz == 1)
+                LCD_BACKLIGHT_ON;
+            SysCtlDelay(5000);
+            PWMGenEnable(PWM0_BASE, PWM_GEN_2);
+
+        }
         //PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, false); //enable selected output states
-        PWMGenDisable(PWM0_BASE, PWM_GEN_2);
-        SysCtlDelay(106667);   //simulate wait state for answer of the us module
+       // PWMGenDisable(PWM0_BASE, PWM_GEN_2);
+       // SysCtlDelay(106667);   //simulate wait state for answer of the us module
         //PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, true); //enable selected output states
-        PWMGenEnable(PWM0_BASE, PWM_GEN_2);
-        SysCtlDelay(1000);   //simulate wait state for answer of the us module
+       // PWMGenEnable(PWM0_BASE, PWM_GEN_2);
+       // SysCtlDelay(1000);   //simulate wait state for answer of the us module
     }
 }
     /*

@@ -7,6 +7,7 @@
 #include "hal_us.h"
 #include "hal_gpio.h"
 #include "tiva_headers.h"
+#include "dl_LCD.h"
 
 //Note: PE4: Module 0; PWM 4; Generator 2
 //      PE5: Module 0; PWM 5; Generator 2
@@ -19,6 +20,7 @@ void PWM0_Int_handler();
 void halResetBurstIndicator();
 
 unsigned short burst_finished_ = 0;
+int pwm_burst_cnt_ = 0;
 
 
 void halUsInit()
@@ -50,12 +52,12 @@ void halUsInit()
     //PWMPulseWidthSet(PWM0_BASE, PWM_OUT_5, 1999);
 
     //enable PWM0 Interrupt
-    /*IntEnable(INT_PWM0_2);
+    IntEnable(INT_PWM0_2);
+
     PWMIntEnable(PWM0_BASE, PWM_INT_GEN_2); // |PWM_INT_CNT_ZERO
-    PWMGenIntTrigEnable(PWM0_BASE, PWM_GEN_2, PWM_TR_CNT_LOAD | PWM_INT_CNT_LOAD);  //enable interrupt on load and set trigger to load
-    PWMGenIntClear(PWM0_BASE, PWM_GEN_2, PWM_INT_CNT_LOAD);   //clear interrupt flags, just to be sure
+    PWMGenIntTrigEnable(PWM0_BASE, PWM_GEN_2, PWM_INT_CNT_LOAD);    //enable interrupt on load and set trigger to load
+    PWMGenIntClear(PWM0_BASE, PWM_GEN_2, PWM_INT_CNT_LOAD);         //clear interrupt flags, just to be sure
     PWMGenIntRegister(PWM0_BASE, PWM_GEN_2, PWM0_Int_handler);      //name of function is equal to the address
-    */
 
     PWMGenEnable(PWM0_BASE, PWM_GEN_2);                             //enable PWM Generator
     PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, true); //enable selected output states
@@ -67,6 +69,7 @@ void halStartBurstModeUS()
     {
         halResetBurstIndicator();
         PWMOutputState(PWM0_BASE, PWM_OUT_4_BIT | PWM_OUT_5_BIT, true); //enable selected output states
+       // LCD_BACKLIGHT_OFF;
     }
 }
 
@@ -86,7 +89,22 @@ void halResetBurstIndicator()
 
 void PWM0_Int_handler()
 {
-    static unsigned short burst_cnt = BURST_CNT_LEN;
+    static int x=8;
+    if(PWM_INT_CNT_LOAD & PWMGenIntStatus(PWM0_BASE, PWM_GEN_2 , true))
+        {
+            PWMGenIntClear(PWM0_BASE, PWM_GEN_2, PWM_INT_CNT_LOAD);   //clear interrupt flag
+        }
+
+    if(pwm_burst_cnt_ > x && !burst_finished_)
+    {
+        burst_finished_ = 1;
+        PWMGenDisable(PWM0_BASE, PWM_GEN_2);
+        LCD_BACKLIGHT_OFF;
+    }
+
+    pwm_burst_cnt_ ++;
+
+  /*  static unsigned short burst_cnt = BURST_CNT_LEN;
 
     if(PWM_INT_CNT_LOAD & PWMGenIntStatus(PWM0_BASE, PWM_GEN_2 , true))
     {
@@ -110,5 +128,5 @@ void PWM0_Int_handler()
     else
     {
         //other interrupt occurred -> will be ignored
-    }
+    }*/
 }

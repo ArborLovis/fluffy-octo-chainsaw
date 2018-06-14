@@ -53,7 +53,8 @@ void configPort_A()
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOA)); //wait for PORT to be ready
 
-    GPIOPinTypeGPIOOutput(GPIO_PORTA_BASE, THROTTLE | STEERING);
+    GPIOPinTypeGPIOOutput(GPIO_PORTA_BASE, THROTTLE | STEERING | LCD_BACKLIGHT);
+
 
     //enable US2 Driver Pin - config as output
     GPIOPinTypeGPIOOutput(GPIO_PORTA_BASE, US2_DRIVER_EN);
