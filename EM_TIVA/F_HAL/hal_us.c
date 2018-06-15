@@ -127,9 +127,10 @@ unsigned short halStartMeasurementUS(SonicNbr choosen_us)
     if(halIsBurstFinished())
     {
         halResetBurstIndicator();
-        halStopTimer2_Both();
+        //halStopTimer2_Both();
         GPIOIntDisable(GPIO_PORTB_BASE, US1_SIGNAL_OUT);
         GPIOIntDisable(GPIO_PORTB_BASE, US2_SIGNAL_OUT);
+        GPIOIntClear(GPIO_PORTB_BASE, US1_SIGNAL_OUT | US2_SIGNAL_OUT);
         us_burst_control_ = 1;
 
         if(choosen_us == US_1)
@@ -144,6 +145,7 @@ unsigned short halStartMeasurementUS(SonicNbr choosen_us)
 
         //PWMGenIntRegister(PWM0_BASE, PWM_GEN_2, PWM0_Int_handler);
         PWMGenEnable(PWM0_BASE, PWM_GEN_2);
+        SysCtlDelay(100);
         return 1;
     }
     else

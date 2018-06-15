@@ -57,16 +57,20 @@ void extIntBHandler()
     if(US1_SIGNAL_OUT & GPIOIntStatus(GPIO_PORTB_BASE, US1_SIGNAL_OUT))   //returns masked interrupt status;
     {
         GPIOIntClear(GPIO_PORTB_BASE, US1_SIGNAL_OUT);      //clear flag US1 - answer
+        SysCtlDelay(10);
         halStopTimer2_A();
         GPIOIntDisable(GPIO_PORTB_BASE, US1_SIGNAL_OUT);
+        IntDisable(INT_GPIOB);
         sensor_data_.Sonic.us1_data_ready = true;
         //SysCtlDelay(100); //Debounce --> just for fast debugging
     }
     if(US2_SIGNAL_OUT & GPIOIntStatus(GPIO_PORTB_BASE, US2_SIGNAL_OUT))   //returns masked interrupt status;
     {
         GPIOIntClear(GPIO_PORTB_BASE, US2_SIGNAL_OUT);      //clear flag of US2 - answer
+        SysCtlDelay(10);
         halStopTimer2_B();
         GPIOIntDisable(GPIO_PORTB_BASE, US2_SIGNAL_OUT);
+        IntDisable(INT_GPIOB);
         sensor_data_.Sonic.us2_data_ready = true;
         //SysCtlDelay(100); //Debounce --> just for fast debugging
     }
@@ -92,6 +96,8 @@ void timer2ISR()
             {
                 call_once = 1;
                 GPIOIntClear(GPIO_PORTB_BASE, US1_SIGNAL_OUT);      //clear flag of US2 - answer
+                SysCtlDelay(10);
+                IntEnable(INT_GPIOB);
                 GPIOIntEnable(GPIO_PORTB_BASE, US1_SIGNAL_OUT);     //wait for answer us1
             }
         }
@@ -115,6 +121,8 @@ void timer2ISR()
                 LCD_BACKLIGHT_ON;
                 call_once_2 = 1;
                 GPIOIntClear(GPIO_PORTB_BASE, US2_SIGNAL_OUT);      //clear flag of US2 - answer
+                SysCtlDelay(10);
+                IntEnable(INT_GPIOB);
                 GPIOIntEnable(GPIO_PORTB_BASE, US2_SIGNAL_OUT);     //wait for answer us2
             }
         }
@@ -131,6 +139,7 @@ void halStartTimer2_A()
 
 void halStopTimer2_A()
 {
+    TimerIntClear(TIMER2_BASE, TIMER_TIMA_TIMEOUT);
     TimerDisable(TIMER2_BASE, TIMER_A);
     TimerIntDisable(TIMER2_BASE, TIMER_TIMA_TIMEOUT);
 }
@@ -142,6 +151,7 @@ void halStartTimer2_B()
 }
 void halStopTimer2_B()
 {
+    TimerIntClear(TIMER2_BASE, TIMER_TIMB_TIMEOUT);
     TimerDisable(TIMER2_BASE, TIMER_B);
     TimerDisable(TIMER2_BASE, TIMER_TIMB_TIMEOUT);
 }
@@ -152,6 +162,7 @@ void halStartTimer2_Both()
 }
 void halStopTimer2_Both()
 {
+    TimerIntClear(TIMER2_BASE, TIMER_TIMA_TIMEOUT | TIMER_TIMB_TIMEOUT);
     TimerDisable(TIMER2_BASE, TIMER_BOTH);
     TimerIntDisable(TIMER2_BASE, TIMER_TIMA_TIMEOUT | TIMER_TIMB_TIMEOUT);
 }

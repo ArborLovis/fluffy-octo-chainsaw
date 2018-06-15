@@ -11,6 +11,8 @@
 #include "hal_uart1.h"
 #include "hal_ssi1.h"
 #include "hal_us.h"
+#include "hal_adc.h"
+#include "hal_timer2.h"
 
 #include "dl_general.h"
 #include "dl_RF_Module.h"
@@ -20,6 +22,7 @@
 extern COM_Status uart_status_;
 extern uint8_t switch_backlight_;
 extern uint8_t is_switch_active;
+extern volatile Sensor sensor_data_;
 
 void main()
 {
@@ -30,7 +33,7 @@ void main()
     uint8_t lock = 0, lock2 = 0;
     uint8_t lock_old = 0, lock_old2 = 0;
 
-    short debug = 1;
+    short debug = 1, adc_debug = 0;
 
     uint8_t uart_load[128] = {};
     uint8_t data_len = 0;
@@ -53,11 +56,17 @@ void main()
         {
             debug = 0;
             halStartMeasurementUS(BOTH);
-            SysCtlDelay(100000);   //simulate wait state for answer of the us module
-            SysCtlDelay(1000);
         }
 
         //****************** PWM US Test - End   ******************
+
+        //****************** ADC READ Test - Begin ******************
+        if(adc_debug)
+        {
+            get_adc_samples();
+            sensor_data_.adc_values;
+        }
+        //****************** ADC READ Test - End ******************
         if(is_switch_active)
         {
             lock = 1;
@@ -188,6 +197,9 @@ void main()
             }
         }
         //SysCtlDelay(5000000);
+
+        SysCtlDelay(100000);   //simulate wait state for answer of the us module
+        SysCtlDelay(1000);
     }
 
 

@@ -13,6 +13,7 @@
 #include "hal_ssi1.h"
 #include "hal_uart1.h"
 #include "hal_timer2.h"
+#include "hal_adc.h"
 
 void hal_init()
 {
@@ -23,5 +24,6 @@ void hal_init()
     halSsi1Int();
     halUart1Init();
     halTimer2Init();
+    halAdcInit();
     //while(!IntMasterEnable());  //wait until interrupts are enabled, global bit
 }
