@@ -28,18 +28,26 @@ extern unsigned short burst_finished_;
 
 void main()
 {
-    int test = 0;
+    float* acc_x = 0;
+    float* acc_y = 0;
+    float* acc_z = 0;
+    float acc_data[3] = 0;
 
     hal_init();
+    halMpuInit();
 
+    halWhoAmI();
     while(1)
    {
+        SysCtlDelay(100000);   //simulate wait state for answer of the us module
        //I2C Acceleromenter Reset
-       halMpuReset();
-       test = 0;
-       SysCtlDelay(100000);   //simulate wait state for answer of the us module
-       test = halWhoAmI();
-       SysCtlDelay(100000);   //simulate wait state for answer of the us module
+        halGetAccData(acc_x, acc_y, acc_z);
+
+
+        acc_data[0] = *acc_x;
+        acc_data[1] = *acc_y;
+        acc_data[2] = *acc_z;
+
 
    }
 }
