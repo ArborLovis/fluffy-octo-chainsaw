@@ -18,6 +18,7 @@
 #include "dl_general.h"
 #include "dl_RF_Module.h"
 #include "dl_LCD.h"
+#include "hal_mpu_9250.h"
 
 extern COM_Status uart_status_;
 extern uint8_t switch_backlight_;
@@ -27,8 +28,23 @@ extern unsigned short burst_finished_;
 
 void main()
 {
+    int test = 0;
 
     hal_init();
+
+    while(1)
+   {
+       //I2C Acceleromenter Reset
+       halMpuReset();
+       test = 0;
+       SysCtlDelay(100000);   //simulate wait state for answer of the us module
+       test = halWhoAmI();
+       SysCtlDelay(100000);   //simulate wait state for answer of the us module
+
+   }
+}
+
+/*
 
     uint8_t data_send[63] = 0;
     uint32_t data_get[63] = 0;
@@ -69,8 +85,11 @@ void main()
         I2CReceiveBurst(TINY_RTC_ADR, SLAVE_REG_TIME, 7, data_get);
         //I2CReceiveBurst(TINY_RTC_ADR, SLAVE_REG_STORE, 56, data_get);
 
+        //I2C Acceleromenter Reset
+        halMpuReset();
+
         SysCtlDelay(1000000);   //simulate wait state for answer of the us module
 
     }
 }
-
+*/
