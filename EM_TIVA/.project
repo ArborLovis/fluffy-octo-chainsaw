@@ -34,7 +34,7 @@
 	<variableList>
 		<variable>
 			<name>TIVA_WARE_ROOT</name>
-			<value>file:/D:/FH%20Joanneum/ECE16/Semester4/EM/TivaWare</value>
+			<value>file:/C:/ti/TivaWare_C_Series-2.1.4.178</value>
 		</variable>
 	</variableList>
 </projectDescription>

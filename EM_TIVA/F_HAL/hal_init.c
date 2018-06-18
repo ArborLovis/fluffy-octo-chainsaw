@@ -12,14 +12,18 @@
 #include "hal_us.h"
 #include "hal_ssi1.h"
 #include "hal_uart1.h"
+#include "hal_timer2.h"
+#include "hal_i2c.h"
 
 void hal_init()
 {
     halSysClkInit();
     halGpioInit();
-    halPWMInit();
-    halUsInit();
-    halSsi1Int();
-    halUart1Init();
+    //halPWMInit();
+    //halUsInit();
+    //halSsi1Int();
+    //halUart1Init();
+    //halTimer2Init();
+    halI2cInit();
     //while(!IntMasterEnable());  //wait until interrupts are enabled, global bit
 }

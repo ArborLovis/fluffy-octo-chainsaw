@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+composer.phar
+/vendor/
+
+# Commit your application's lock file https://getcomposer.org/doc/01-basic-usage.md#commit-your-composer-lock-file-to-version-control
+# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
+# composer.lock
+/EM_TIVA/
+=======
 composer.phar
 /vendor/
 
@@ -46,3 +55,10 @@ EM_TIVA/Debug/ccsObjs.opt
 EM_TIVA/Debug/EM_1_TIVA_Git.map
 EM_TIVA/Debug/EM_1_TIVA_Git_linkInfo.xml
 EM_TIVA/F_HAL/hal_uart1.c
+>>>>>>> master
+EM_TIVA/Debug/EM_1_TIVA_Git_linkInfo.xml
+EM_TIVA/Debug/EM_1_TIVA_Git.map
+EM_TIVA/Debug/ccsObjs.opt
+EM_TIVA/.project
+EM_TIVA/.cproject
+EM_TIVA/.ccsproject
