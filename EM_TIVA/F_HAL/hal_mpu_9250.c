@@ -11,6 +11,8 @@
 void halMpuInit()
 {
     halMpuReset();
+    // Delay for Reset-
+    SysCtlDelay(1000000);   //simulate wait state for answer of the us module
     halAccInit();
 
 }
@@ -34,6 +36,8 @@ void halAccInit()
 {
     uint8_t reg[3] = {0x1D, 0x1C, 0x37};
     uint8_t data[3] = {0x06, 0x08, 0x02};
+    //uint8_t reg[2] = {0x1D, 0x1C};
+    //uint8_t data[2] = {0x06, 0x08};
     int i=0;
 
     for(i = 0; i < sizeof(reg); i++)
@@ -47,20 +51,24 @@ void halGetAccData(float* accel_x, float* accel_y, float* accel_z)
     float resolution = 8.0/65536.0;
 
     // read MPU Acc value x
-    uint16_t temp_x = I2CReceiveSingle(ACCELGYRO_ADDR, Accel_reg_addr[0]);
-    uint16_t accel16_x = (temp_x << 8) | I2CReceiveSingle(ACCELGYRO_ADDR, Accel_reg_addr[1]);
+    int16_t temp_x = I2CReceiveSingle(ACCELGYRO_ADDR, Accel_reg_addr[0]);
+    int16_t accel16_x = (temp_x << 8) | I2CReceiveSingle(ACCELGYRO_ADDR, Accel_reg_addr[1]);
 
     // read MPU Acc value y
-    uint16_t temp_y = I2CReceiveSingle(ACCELGYRO_ADDR, Accel_reg_addr[2]);
-    uint16_t accel16_y = (temp_y << 8) | I2CReceiveSingle(ACCELGYRO_ADDR, Accel_reg_addr[3]);
+    int16_t temp_y = I2CReceiveSingle(ACCELGYRO_ADDR, Accel_reg_addr[2]);
+    int16_t accel16_y = (temp_y << 8) | I2CReceiveSingle(ACCELGYRO_ADDR, Accel_reg_addr[3]);
 
     // read MPU Acc value z
-    uint16_t temp_z = I2CReceiveSingle(ACCELGYRO_ADDR, Accel_reg_addr[4]);
-    uint16_t accel16_z = (temp_z << 8) | I2CReceiveSingle(ACCELGYRO_ADDR, Accel_reg_addr[5]);
+    int16_t temp_z = I2CReceiveSingle(ACCELGYRO_ADDR, Accel_reg_addr[4]);
+    int16_t accel16_z = (temp_z << 8) | I2CReceiveSingle(ACCELGYRO_ADDR, Accel_reg_addr[5]);
 
-    *accel_x = (float)accel16_x * resolution;
-    *accel_y = (float)accel16_y * resolution;
-    *accel_z = (float)accel16_z * resolution;
+    float x_value = (float)accel16_x * resolution;
+    float y_value = (float)accel16_y * resolution;
+    float z_value = (float)accel16_z * resolution;
+
+    *accel_x = x_value;
+    *accel_y = y_value;
+    *accel_z = z_value;
 
 
 }

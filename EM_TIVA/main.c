@@ -28,27 +28,64 @@ extern unsigned short burst_finished_;
 
 void main()
 {
-    float* acc_x = 0;
-    float* acc_y = 0;
-    float* acc_z = 0;
+    float acc_x = 0;
+    float acc_y = 0;
+    float acc_z = 0;
     float acc_data[3] = 0;
 
     hal_init();
     halMpuInit();
+    dlLcdInit();
+    dlLcdClear();
 
-    halWhoAmI();
+    //halWhoAmI();
     while(1)
    {
-        SysCtlDelay(100000);   //simulate wait state for answer of the us module
+        SysCtlDelay(1000000);   //simulate wait state for answer of the us module
        //I2C Acceleromenter Reset
-        halGetAccData(acc_x, acc_y, acc_z);
+        halGetAccData(&acc_x, &acc_y, &acc_z);
 
 
-        acc_data[0] = *acc_x;
-        acc_data[1] = *acc_y;
-        acc_data[2] = *acc_z;
+        acc_data[0] = acc_x*1000;
+        acc_data[1] = acc_y*1000;
+        acc_data[2] = acc_z*1000;
 
 
+
+
+        LCD_BACKLIGHT_ON;
+        if(acc_data[0] >= 0)
+        {
+            dlLcdWriteText("acc_x: ", 7, 0, 0);
+            dlLcdWriteUInt((uint16_t)acc_data[0], 0, 46);
+        }
+        else
+        {
+            dlLcdWriteText("acc_x:-", 7, 0, 0);
+            dlLcdWriteUInt((uint16_t)(acc_data[0]*-1), 0, 46);
+        }
+
+        if(acc_data[1] >= 0)
+        {
+            dlLcdWriteText("acc_y: ", 7, 1, 0);
+            dlLcdWriteUInt((uint16_t)acc_data[1], 1, 46);
+        }
+        else
+        {
+            dlLcdWriteText("acc_y:-", 7, 1, 0);
+            dlLcdWriteUInt((uint16_t)(acc_data[1]*-1), 1, 46);
+        }
+
+        if(acc_data[2] >= 0)
+        {
+            dlLcdWriteText("acc_z: ", 7, 2, 0);
+            dlLcdWriteUInt((uint16_t)acc_data[2], 2, 46);
+        }
+        else
+        {
+            dlLcdWriteText("acc_z:-", 7, 2, 0);
+            dlLcdWriteUInt((uint16_t)(acc_data[2]*-1), 2, 46);
+        }
    }
 }
 
