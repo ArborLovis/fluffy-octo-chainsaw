@@ -10,8 +10,8 @@
 
 #include "../tiva_headers.h"
 
-#define STEERING_MIDDLE         1499
-#define STEERING_MAX_RIGHT      1799
+#define STEERING_MIDDLE         1539
+#define STEERING_MAX_RIGHT      1899
 #define STEERING_MAX_LEFT       1199
 
 #define MIN_RPW_ESC      5000

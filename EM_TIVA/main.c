@@ -13,6 +13,7 @@
 #include "hal_us.h"
 #include "hal_adc.h"
 #include "hal_timer2.h"
+#include "hal_usc.h"
 
 #include "dl_general.h"
 #include "dl_RF_Module.h"
@@ -40,6 +41,7 @@ void main()
 
     hal_init();
     dlLcdInit();
+    dlLcdClear();
 
     PWMPulseWidthSet(PWM1_BASE, PWM_OUT_3, 1999);
     PWMOutputState(PWM1_BASE, PWM_OUT_3_BIT, false); //enable selected output states
@@ -47,8 +49,16 @@ void main()
     //dlSetChannelRF(CHANNEL_ADR);
     //dlSetCarAddress(CAR_NODE_ADR);
 
+    uint8_t debug_steer = 1;
+    int16_t steer_val = 0;
+
     while(1)
     {
+        if(debug_steer)
+        {
+            dlSetSteering(steer_val);
+        }
+
         //****************** PWM US Test - Begin ******************
         uint32_t dist1 = dlGetDistance_US1();
         uint32_t dist2 = dlGetDistance_US2();
@@ -63,7 +73,7 @@ void main()
         //****************** ADC READ Test - Begin ******************
         if(adc_debug)
         {
-            get_adc_samples();
+            halGetAdcSamples();
             sensor_data_.adc_values;
         }
         //****************** ADC READ Test - End ******************
@@ -135,6 +145,8 @@ void main()
                 lock_old2 = lock2;
             }
         }
+    }
+}
         //dlSendDataRF(9, test, 5);
 
         // UART Test 1: Turning on LCD Backlight
@@ -176,6 +188,8 @@ void main()
             cnt = 0;
 */
 
+        /*
+
         if(!dir)
         {
             dlSetSteering(pwm_ctr);
@@ -202,8 +216,7 @@ void main()
         SysCtlDelay(1000);
     }
 
-
-}
+*/
 
 //Here is an GIT-Test ;)
 

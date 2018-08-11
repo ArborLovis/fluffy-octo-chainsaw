@@ -27,5 +27,6 @@
 #include "driverlib/ssi.h"
 #include "driverlib/uart.h"
 #include "driverlib/adc.h"
+#include "driverlib/i2c.h"
 
 #endif /* TIVA_HEADERS_H_ */

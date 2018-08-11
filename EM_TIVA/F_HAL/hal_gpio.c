@@ -50,7 +50,7 @@ void halGpioInit()
 void configPort_A()
 {
     //enable peripheral of Port A
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);        //need time, about 5 cycles
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOA)); //wait for PORT to be ready
 
     GPIOPinTypeGPIOOutput(GPIO_PORTA_BASE, THROTTLE | STEERING);
