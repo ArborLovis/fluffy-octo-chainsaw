@@ -27,7 +27,7 @@ void halPWMInit()
     PWMGenConfigure(PWM1_BASE, PWM_GEN_1, PWM_GEN_MODE_DOWN | PWM_GEN_MODE_NO_SYNC);
     PWMGenPeriodSet(PWM1_BASE, PWM_GEN_1, 16666);   //16,67ms (60Hz)
     PWMPulseWidthSet(PWM1_BASE, PWM_OUT_2, 1999);   //2ms
-    PWMPulseWidthSet(PWM1_BASE, PWM_OUT_3, 1999);   //2ms
+    PWMPulseWidthSet(PWM1_BASE, PWM_OUT_3, 499);   //2ms
 
     PWMGenEnable(PWM1_BASE, PWM_GEN_1);                             //enable PWM Generator
     PWMOutputState(PWM1_BASE, PWM_OUT_2_BIT | PWM_OUT_3_BIT, true); //enable selected output states

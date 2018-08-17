@@ -10,15 +10,16 @@
 
 #include "../tiva_headers.h"
 
+//left and right out of the view of the front
 #define STEERING_MIDDLE         1539
 #define STEERING_MAX_RIGHT      1899
 #define STEERING_MAX_LEFT       1199
 
-#define MIN_RPW_ESC      5000
-#define MAX_RPW_ESC      2500
-#define MIN_FPW_ESC      7500
-#define MAX_FPW_ESC      10000
-#define MAX_BRAKE_ESC    6250
+#define MIN_RPW_ESC      2500
+#define MAX_RPW_ESC      5000
+#define MIN_FPW_ESC      1560
+#define MAX_FPW_ESC      2470
+#define MAX_BRAKE_ESC    1500
 
 #define MAX_RPM_BUFFER 11
 #define NUM_CHANNEL     8

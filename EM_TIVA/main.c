@@ -39,25 +39,107 @@ void main()
     uint8_t uart_load[128] = {};
     uint8_t data_len = 0;
 
+    uint8_t first = 0;
+
     hal_init();
     dlLcdInit();
     dlLcdClear();
 
-    PWMPulseWidthSet(PWM1_BASE, PWM_OUT_3, 1999);
-    PWMOutputState(PWM1_BASE, PWM_OUT_3_BIT, false); //enable selected output states
+    //disable motor control (PA7)
+    //PWMPulseWidthSet(PWM1_BASE, PWM_OUT_3, 1999);
+    //PWMOutputState(PWM1_BASE, PWM_OUT_3_BIT, false); //enable selected output states
 
     //dlSetChannelRF(CHANNEL_ADR);
     //dlSetCarAddress(CAR_NODE_ADR);
 
-    uint8_t debug_steer = 1;
-    int16_t steer_val = 0;
+    uint8_t debug_thr = 1;
+    int16_t speed_val = 10;
+
+    uint_fast32_t debug_cnt = 999999999;
+
+    dlSetThrottle(BRAKE, 50);
+    while(--debug_cnt);
+    debug_cnt = 999999999;
+    while(--debug_cnt);
+    debug_cnt = 999999999;
+    while(--debug_cnt);
+    debug_cnt = 999999999;
+    while(--debug_cnt);
+    debug_cnt = 999999999;
+    while(--debug_cnt);
+    debug_cnt = 999999999;
+    while(--debug_cnt);
+    debug_cnt = 999999999;
+    while(--debug_cnt);
+    debug_cnt = 999999999;
+    while(--debug_cnt);
+    debug_cnt = 999999999;
+    while(--debug_cnt);
+    debug_cnt = 999999999;
+    while(--debug_cnt);
+    debug_cnt = 999999999;
+    while(--debug_cnt);
+    debug_cnt = 999999999;
 
     while(1)
     {
-        if(debug_steer)
+        if(debug_cnt >= 90000)
         {
-            dlSetSteering(steer_val);
+            debug_cnt = 0;
+            speed_val += 10;
+
+            if(speed_val >= 110)
+            {
+                debug_thr++;
+                //speed_val = 0;
+                first = 0;
+            }
+
+            if(debug_thr == 1)
+            {
+                dlSetThrottle(FORWARD, speed_val);
+                //PWMPulseWidthSet(PWM1_BASE, PWM_OUT_3, speed_val);
+            }
+            else if (debug_thr == 2)
+            {
+                dlSetThrottle(BRAKE, speed_val);
+                //PWMPulseWidthSet(PWM1_BASE, PWM_OUT_3, speed_val);
+            }
+            else if (debug_thr == 3)
+            {
+
+                if(!first)
+                {
+                    first = 1;
+                    uint32_t wait = 50000;
+                    //dlSetThrottle(BACKWARD, 0);
+                    //while(--wait);
+
+                    //wait = 50000;
+                    //dlSetThrottle(BACKWARD, 50);
+                    //while(--wait);
+
+                    //wait = 50000;
+                    //dlSetThrottle(BACKWARD, 100);
+                    //while(--wait);
+
+                }
+
+                dlSetThrottle(BRAKE, speed_val);
+
+                //PWMPulseWidthSet(PWM1_BASE, PWM_OUT_3, speed_val);
+            }
+
+            if(debug_thr >= 4)
+                debug_thr = 1;
         }
+
+        if(speed_val >= 110)
+           speed_val = 0;
+
+        debug_cnt++;
+
+        //SysCtlDelay(100);
 
         //****************** PWM US Test - Begin ******************
         uint32_t dist1 = dlGetDistance_US1();
