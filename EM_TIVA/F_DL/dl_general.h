@@ -19,7 +19,7 @@
 #define MAX_RPW_ESC      5000
 #define MIN_FPW_ESC      1560
 #define MAX_FPW_ESC      2470
-#define MAX_BRAKE_ESC    1500
+#define MAX_BRAKE_ESC    1400
 
 #define MAX_RPM_BUFFER 11
 #define NUM_CHANNEL     8

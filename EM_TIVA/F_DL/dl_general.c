@@ -42,7 +42,7 @@ void dlSetSteering(int16_t ctr_val)
 void dlSetThrottle(SpeedMode dir, int16_t speed)
 {
     static int16_t pwm_speed;
-    uint32_t wait = 50000;
+    uint32_t wait = 10000;
 
     switch(dir)
     {
@@ -55,19 +55,7 @@ void dlSetThrottle(SpeedMode dir, int16_t speed)
                 pwm_speed = MAX_FPW_ESC;
         break;
 
-        case BACKWARD:                          //ranges for driving backward and braking are fictive
-            if((speed >= 0) && (speed <= 100))  //motor controller drives only forward at the moment
-               pwm_speed = MAX_RPW_ESC - (speed * 25);
-           else if(speed > 100)
-               pwm_speed = MAX_RPW_ESC;
-           else
-               pwm_speed = MIN_RPW_ESC;
-        break;
-
-        case BRAKE:
-            PWMPulseWidthSet(PWM1_BASE, PWM_OUT_3, 1000);
-            while(--wait);
-
+        case BACKWARD:
             if((speed >= 0) && (speed <= 100))
             {
                 pwm_speed = MAX_BRAKE_ESC - (speed << 3);
@@ -76,6 +64,23 @@ void dlSetThrottle(SpeedMode dir, int16_t speed)
                 pwm_speed = MAX_BRAKE_ESC - (100 << 3);
             else
                 pwm_speed = MAX_BRAKE_ESC;
+
+            unsigned short pwm_set = 1500;
+            for(; pwm_set >= pwm_speed; pwm_set -= 10)
+            {
+                PWMPulseWidthSet(PWM1_BASE, PWM_OUT_3, pwm_set);
+                wait = 10000;
+                while(--wait);
+            }
+        break;
+
+        case BRAKE:                          //ranges for braking are fictive
+            if((speed >= 0) && (speed <= 100))
+               pwm_speed = MAX_RPW_ESC - (speed * 25);
+           else if(speed > 100)
+               pwm_speed = MAX_RPW_ESC;
+           else
+               pwm_speed = MIN_RPW_ESC;
         break;
     }
 
