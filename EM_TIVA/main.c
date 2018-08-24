@@ -44,9 +44,9 @@ void main()
    {
         test = 0;
         SysCtlDelay(1000000);   //simulate wait state for answer of the us module
-        //dlShowAccData();
-        //dlShowGyrData();
-        //SysCtlDelay(1000);   //simulate wait state for answer of the us module
+        dlShowAccData();
+        dlShowGyrData();
+        SysCtlDelay(1000);   //simulate wait state for answer of the us module
         test = halWhoAmI_Gyr();
         SysCtlDelay(1000);   //simulate wait state for answer of the us module
 
