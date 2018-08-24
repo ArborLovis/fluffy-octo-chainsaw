@@ -16,9 +16,13 @@
 void halMpuInit();
 void halMpuReset();
 uint8_t halWhoAmI();
+uint32_t halWhoAmI_Gyr();
 
 void halAccInit();
-void halGetAccData(float* accel_x, float* accel_y, float* accel_z);
+void halGyrInit();
+void halMagInit();
 
+void halGetAccData(float* accel_x, float* accel_y, float* accel_z);
+void halGetGyrData(float* gyr_x, float* gyr_y, float* gyr_z);
 
 #endif /* F_HAL_HAL_MPU_9250_H_ */
