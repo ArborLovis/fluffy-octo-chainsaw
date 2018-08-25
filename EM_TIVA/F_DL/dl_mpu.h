@@ -12,6 +12,8 @@ void dlShowAccData();
 void dlShowGyrData();
 void dlShowMagData();
 
+void dlSendSensorData(uint8_t rx_address);
+
 
 
 #endif /* F_DL_DL_MPU_H_ */

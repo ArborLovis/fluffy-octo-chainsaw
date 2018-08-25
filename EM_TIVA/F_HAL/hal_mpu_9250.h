@@ -24,6 +24,8 @@ uint8_t halStatus2_Mag();
 void halCtlWrite_Mag(int mode);
 uint8_t halCtlRead_Mag();
 
+void halGetMagASA(float* asa_x, float* asa_y, float* asa_z);
+
 void halAccInit();
 void halGyrInit();
 void halMagInit();

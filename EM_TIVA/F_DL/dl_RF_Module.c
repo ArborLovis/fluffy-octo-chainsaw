@@ -64,7 +64,8 @@ void dlSendDataRF(uint8_t rx_address, uint8_t* data, uint8_t len)
     while(UARTBusy(UART1_BASE));
     halSendUart1Data(send_buffer, CMD_LEN+1);
     halSendUart1Data(data, len);
-    SysCtlDelay(3000000);
+    //SysCtlDelay(3000000); Changed because of bad data flow
+    SysCtlDelay(100000);
     while(UARTBusy(UART1_BASE));
 }
 

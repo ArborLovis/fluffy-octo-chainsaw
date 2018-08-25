@@ -8,6 +8,10 @@
 #include "hal_i2c.h"
 #include "motion_reg_addr.h"
 
+float asa_x_ = 0;
+float asa_y_ = 0;
+float asa_z_ = 0;
+
 void halMpuInit()
 {
     halMpuReset();
@@ -74,6 +78,9 @@ void halMagInit()
     SysCtlDelay(10000);   //simulate wait state for answer of the us module
     halCtlWrite_Mag(0);
     SysCtlDelay(10000);
+
+    halGetMagASA(&asa_x_, &asa_y_, &asa_z_);
+
     halCtlWrite_Mag(2);
     SysCtlDelay(10000);
 }
@@ -196,7 +203,7 @@ void halGetGyrData(float* gyr_x, float* gyr_y, float* gyr_z)
 
 void halGetMagData(float* mag_x, float* mag_y, float* mag_z)
 {
-    float resolution = (2*1000)/65536.0;
+   float resolution = 4912.0/32760.0;
 
    // read MPU Gyr value x
    int16_t temp_x = I2CReceiveSingle(MAG_ADDR, magn_reg_addr[0]);
@@ -212,10 +219,23 @@ void halGetMagData(float* mag_x, float* mag_y, float* mag_z)
    int16_t temp_z = I2CReceiveSingle(MAG_ADDR, magn_reg_addr[4]);
    int16_t mag_16_z = (temp_z << 8) | I2CReceiveSingle(MAG_ADDR, magn_reg_addr[5]);
 
-   *mag_x = mag_16_x*resolution;
-   *mag_y = mag_16_y*resolution;
-   *mag_z = mag_16_z*resolution;
+   *mag_x = mag_16_x * resolution * asa_x_;
+   *mag_y = mag_16_y * resolution * asa_y_;
+   *mag_z = mag_16_z * resolution * asa_z_;
 }
+
+void halGetMagASA(float* asa_x, float* asa_y, float* asa_z)
+{
+    int8_t asa_x_raw = I2CReceiveSingle(MAG_ADDR, 0x10);
+    *asa_x = ((((float)asa_x_raw-128)/2)/128)+1;
+
+    int8_t asa_y_raw = I2CReceiveSingle(MAG_ADDR, 0x11);
+    *asa_y = ((((float)asa_y_raw-128)/2)/128)+1;
+
+    int8_t asa_z_raw = I2CReceiveSingle(MAG_ADDR, 0x12);
+    *asa_z = ((((float)asa_z_raw-128)/2)/128)+1;
+}
+
 
 
 

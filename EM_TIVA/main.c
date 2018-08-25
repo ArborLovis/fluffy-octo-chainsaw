@@ -27,16 +27,22 @@ extern uint8_t is_switch_active;
 extern int pwm_burst_cnt_;
 extern unsigned short burst_finished_;
 
+uint8_t data_sensor_[6] =  {0};
+
 void main()
 {
 
 
     hal_init();
     halMpuInit();
+
     dlLcdInit();
     dlLcdClear();
 
-    LCD_BACKLIGHT_OFF;
+    dlSetChannelRF(CHANNEL_ADR);
+    dlSetCarAddress(CAR_NODE_ADR);
+
+    LCD_BACKLIGHT_ON;
 
     // Init Magnetometer
     SysCtlDelay(1000);   //simulate wait state for answer of the us module
@@ -60,11 +66,13 @@ void main()
         //SysCtlDelay(1000);   //simulate wait state for answer of the us module
         //dlShowGyrData();
 
-        SysCtlDelay(100000);   //simulate wait state for answer of the us module
+        SysCtlDelay(10000);   //simulate wait state for answer of the us module
         uint8_t status = halStatus1_Mag();
         if(status == 0x01)
         {
-            dlShowMagData();
+            dlSendSensorData(PC_NODE_ADR);
+            //dlShowMagData();
+            //SysCtlDelay(100000);   //simulate wait state for answer of the us module
         }
         else if(status > 0x01)
         {
@@ -74,6 +82,7 @@ void main()
 
         //SysCtlDelay(1000);   //simulate wait state for answer of the us module
         //halStatus2_Mag();
+
 
 
 
