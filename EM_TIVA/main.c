@@ -36,19 +36,47 @@ void main()
     dlLcdInit();
     dlLcdClear();
 
-    LCD_BACKLIGHT_ON;
-    uint8_t test;
+    LCD_BACKLIGHT_OFF;
 
-    //halWhoAmI();
+    // Init Magnetometer
+    SysCtlDelay(1000);   //simulate wait state for answer of the us module
+    //dlShowMagData();
+    halWhoAmI_Mag();
+
+    SysCtlDelay(1000);   //simulate wait state for answer of the us module
+    halStatus1_Mag();
+
+    SysCtlDelay(5000);   //simulate wait state for answer of the us module
+    halStatus2_Mag();
+
+    SysCtlDelay(1000);   //simulate wait state for answer of the us module
+    halCtlRead_Mag();
+
     while(1)
    {
-        test = 0;
-        SysCtlDelay(1000000);   //simulate wait state for answer of the us module
-        dlShowAccData();
-        dlShowGyrData();
-        SysCtlDelay(1000);   //simulate wait state for answer of the us module
-        test = halWhoAmI_Gyr();
-        SysCtlDelay(1000);   //simulate wait state for answer of the us module
+        //SysCtlDelay(10000);   //simulate wait state for answer of the us module
+        //dlShowAccData();
+
+        //SysCtlDelay(1000);   //simulate wait state for answer of the us module
+        //dlShowGyrData();
+
+        SysCtlDelay(100000);   //simulate wait state for answer of the us module
+        uint8_t status = halStatus1_Mag();
+        if(status == 0x01)
+        {
+            dlShowMagData();
+        }
+        else if(status > 0x01)
+        {
+            halStatus2_Mag();
+            SysCtlDelay(50000);
+        }
+
+        //SysCtlDelay(1000);   //simulate wait state for answer of the us module
+        //halStatus2_Mag();
+
+
+
 
    }
 }

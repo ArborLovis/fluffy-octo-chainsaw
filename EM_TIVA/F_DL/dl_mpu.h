@@ -10,6 +10,7 @@
 
 void dlShowAccData();
 void dlShowGyrData();
+void dlShowMagData();
 
 
 

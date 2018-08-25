@@ -106,7 +106,55 @@ void dlShowGyrData()
               dlLcdWriteText("gyr_z:-", 7, 5, 0);
               dlLcdWriteUInt((uint16_t)(gyr_data[2]*-1), 5, 46);
           }
+}
+
+void dlShowMagData()
+{
+   float mag_x = 0;
+   float mag_y = 0;
+   float mag_z = 0;
+   float mag_data[3] = {0};
+
+   halGetMagData(&mag_x, &mag_y, &mag_z);
+
+/*
+   mag_data[0] = mag_x*1000;
+   mag_data[1] = mag_y*1000;
+   mag_data[2] = mag_z*1000;
 
 
+          if(mag_data[0] >= 0)
+          {
+              dlLcdWriteText("mag_x: ", 7, 3, 0);
+              dlLcdWriteUInt((uint16_t)mag_data[0], 3, 46);
+          }
+          else
+          {
+              dlLcdWriteText("mag_x:-", 7, 3, 0);
+              dlLcdWriteUInt((uint16_t)(mag_data[0]*-1), 3, 46);
+          }
+
+          if(mag_data[1] >= 0)
+          {
+              dlLcdWriteText("mag_y: ", 7, 4, 0);
+              dlLcdWriteUInt((uint16_t)mag_data[1], 4, 46);
+          }
+          else
+          {
+              dlLcdWriteText("mag_y:-", 7, 4, 0);
+              dlLcdWriteUInt((uint16_t)(mag_data[1]*-1), 4, 46);
+          }
+
+          if(mag_data[2] >= 0)
+          {
+              dlLcdWriteText("mag_z: ", 7, 5, 0);
+              dlLcdWriteUInt((uint16_t)mag_data[2], 5, 46);
+          }
+          else
+          {
+              dlLcdWriteText("mag_z:-", 7, 5, 0);
+              dlLcdWriteUInt((uint16_t)(mag_data[2]*-1), 5, 46);
+          }
+          */
 }
 
