@@ -13,24 +13,16 @@
 #include "hal_ssi1.h"
 #include "hal_uart1.h"
 #include "hal_timer2.h"
+#include "hal_i2c.h"
 
 void hal_init()
 {
     halSysClkInit();
     halGpioInit();
-<<<<<<< HEAD
     halPWMInit();
     //halUsInit();
     halSsi1Int();
     halUart1Init();
     //halTimer2Init();
     halI2cInit();
-=======
-    //halPWMInit();
-    halUsInit();
-    //halSsi1Int();
-    //halUart1Init();
-    //halTimer2Init();
-    //while(!IntMasterEnable());  //wait until interrupts are enabled, global bit
->>>>>>> parent of 48fbefc... I2c_setup and testing with RTC
 }

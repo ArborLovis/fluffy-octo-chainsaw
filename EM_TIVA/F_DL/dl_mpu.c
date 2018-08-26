@@ -179,9 +179,9 @@ void dlSendSensorData(uint8_t rx_address)
     uint8_t sensor_data_gyr[9] = {0};
     uint8_t sensor_data_mag[9] = {0};
 
-    halGetAccData(&acc_x, &acc_y, &acc_z);
-    halGetGyrData(&gyr_x, &gyr_y, &gyr_z);
-    halGetMagData(&mag_x, &mag_y, &mag_z);
+    //halGetAccData(&acc_x, &acc_y, &acc_z);
+    //halGetGyrData(&gyr_x, &gyr_y, &gyr_z);
+    //halGetMagData(&mag_x, &mag_y, &mag_z);
 
     sensor_data_acc[0] = 0x01;
     sensor_data_acc[1] = (uint8_t)(acc_x*1000);
@@ -192,7 +192,7 @@ void dlSendSensorData(uint8_t rx_address)
     sensor_data_acc[6] = (uint8_t)((uint16_t)(acc_z*1000) << 8);
     sensor_data_acc[7] = 0x0D;
     sensor_data_acc[8] = 0x0A;
-    dlSendDataRF(rx_address, sensor_data_acc, 9);
+    //dlSendDataRF(rx_address, sensor_data_acc, 9);
 
     sensor_data_gyr[0] = 0x02;
     sensor_data_gyr[1] = (uint8_t)(gyr_x*1000);
@@ -203,8 +203,34 @@ void dlSendSensorData(uint8_t rx_address)
     sensor_data_gyr[6] = (uint8_t)((uint16_t)(gyr_z*1000) << 8);
     sensor_data_gyr[7] = 0x0D;
     sensor_data_gyr[8] = 0x0A;
-    dlSendDataRF(rx_address, sensor_data_gyr, 9);
+    //dlSendDataRF(rx_address, sensor_data_gyr, 9);
 
+    dlShowMagData();
+
+    int8_t h_mag_x = 0;
+    int8_t l_mag_x = 0;
+    int8_t h_mag_y = 0;
+    int8_t l_mag_y = 0;
+    int8_t h_mag_z = 0;
+    int8_t l_mag_z = 0;
+
+    halGetRawMagData(&h_mag_x, &l_mag_x, &h_mag_y, &l_mag_y, &h_mag_z, &l_mag_z);
+
+    sensor_data_mag[0] = 0x03;
+    sensor_data_mag[1] = h_mag_x;
+    sensor_data_mag[2] = l_mag_x;
+    sensor_data_mag[3] = h_mag_y;
+    sensor_data_mag[4] = l_mag_y;
+    sensor_data_mag[5] = h_mag_z;
+    sensor_data_mag[6] = l_mag_z;
+    sensor_data_mag[7] = 0x0D;
+    sensor_data_mag[8] = 0x0A;
+
+
+        dlSendDataRF(rx_address, sensor_data_mag, 9);
+
+
+    /*
     sensor_data_mag[0] = 0x03;
     sensor_data_mag[1] = (uint8_t)mag_x;
     sensor_data_mag[2] = (uint8_t)((uint16_t)mag_x << 8);
@@ -214,8 +240,10 @@ void dlSendSensorData(uint8_t rx_address)
     sensor_data_mag[6] = (uint8_t)((uint16_t)mag_x << 8);
     sensor_data_mag[7] = 0x0D;
     sensor_data_mag[8] = 0x0A;
-    dlSendDataRF(rx_address, sensor_data_mag, 9);
 
+
+    dlSendDataRF(rx_address, sensor_data_mag, 9);
+     */
 
     //dlSendDataRF(rx_address, sensor_data, 20);
 
