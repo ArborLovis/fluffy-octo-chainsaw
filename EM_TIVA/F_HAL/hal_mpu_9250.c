@@ -4,6 +4,7 @@
  *  Created on: 18.06.2018
  *      Author: Michael
  */
+#include "../F_TIVA/tiva_headers.h"
 #include "hal_mpu_9250.h"
 #include "hal_i2c.h"
 #include "motion_reg_addr.h"
@@ -222,6 +223,16 @@ void halGetMagData(float* mag_x, float* mag_y, float* mag_z)
    *mag_x = mag_16_x * resolution * asa_x_;
    *mag_y = mag_16_y * resolution * asa_y_;
    *mag_z = mag_16_z * resolution * asa_z_;
+}
+
+void halGetRawMagData(int8_t* h_mag_x, int8_t* l_mag_x, int8_t* h_mag_y, int8_t* l_mag_y, int8_t* h_mag_z, int8_t* l_mag_z)
+{
+    *h_mag_x = I2CReceiveSingle(MAG_ADDR, magn_reg_addr[0]);
+    *l_mag_x = I2CReceiveSingle(MAG_ADDR, magn_reg_addr[1]);
+    *h_mag_y = I2CReceiveSingle(MAG_ADDR, magn_reg_addr[2]);
+    *l_mag_y = I2CReceiveSingle(MAG_ADDR, magn_reg_addr[3]);
+    *h_mag_z = I2CReceiveSingle(MAG_ADDR, magn_reg_addr[4]);
+    *l_mag_z = I2CReceiveSingle(MAG_ADDR, magn_reg_addr[5]);
 }
 
 void halGetMagASA(float* asa_x, float* asa_y, float* asa_z)

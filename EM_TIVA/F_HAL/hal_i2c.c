@@ -8,7 +8,6 @@
 #include <hal_i2c.h>
 #include "hal_gpio.h"
 #include "../F_TIVA/tiva_headers.h"
-//TEst
 
 void halI2cInit()
 {
