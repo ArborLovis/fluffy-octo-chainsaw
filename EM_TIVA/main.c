@@ -76,7 +76,7 @@ void main()
         {
             dlSendSensorData(PC_NODE_ADR);
             //dlShowMagData();
-            SysCtlDelay(100000);   //simulate wait state for answer of the us module
+            //SysCtlDelay(100000);   //simulate wait state for answer of the us module
         }
         else if(status > 0x01)
         {
