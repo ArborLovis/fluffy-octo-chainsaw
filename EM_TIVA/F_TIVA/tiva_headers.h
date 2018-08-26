@@ -12,9 +12,7 @@
 
 #include "stdint.h"
 #include "stdbool.h"
-#include <stdarg.h>
 
-#include "inc/hw_i2c.h"
 #include "inc/hw_gpio.h"
 #include "inc/hw_types.h"
 #include "inc/hw_memmap.h"
@@ -26,6 +24,5 @@
 #include "driverlib/timer.h"
 #include "driverlib/interrupt.h"
 #include "driverlib/pwm.h"
-#include "driverlib/i2c.h"
 
 #endif /* TIVA_HEADERS_H_ */
