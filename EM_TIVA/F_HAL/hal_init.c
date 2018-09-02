@@ -14,6 +14,7 @@
 #include "hal_uart1.h"
 #include "hal_timer2.h"
 #include "hal_i2c.h"
+#include "hal_rtc.h"
 
 void hal_init()
 {
@@ -25,4 +26,5 @@ void hal_init()
     halUart1Init();
     //halTimer2Init();
     halI2cInit();
+    //halInitRtc();
 }

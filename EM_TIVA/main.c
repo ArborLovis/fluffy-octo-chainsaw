@@ -20,6 +20,7 @@
 #include "dl_LCD.h"
 #include "hal_mpu_9250.h"
 #include "dl_mpu.h"
+#include "hal_rtc.h"
 
 extern COM_Status uart_status_;
 extern uint8_t switch_backlight_;
@@ -61,7 +62,7 @@ void main()
     while(1)
    {
         //SysCtlDelay(10000);   //simulate wait state for answer of the us module
-        //dlShowAccData();
+        dlShowAccData();
 
         //SysCtlDelay(1000);   //simulate wait state for answer of the us module
         //dlShowGyrData();
@@ -82,60 +83,11 @@ void main()
 
         //SysCtlDelay(1000);   //simulate wait state for answer of the us module
         //halStatus2_Mag();
-
-
+        //SysCtlDelay(33333);
+        //halShowTime();
+        //SysCtlDelay(33333);
 
 
 
    }
 }
-
-/*
-
-    uint8_t data_send[63] = 0;
-    uint32_t data_get[63] = 0;
-
-#ifdef SET_TIME
-
-    //Set Time to Clock in BCD-Code
-    data_send[0] = 0x00;     //sec
-    data_send[1] = 0x24;     //min
-    data_send[2] = 0x00;     //hr
-
-    data_send[3] = 0x00;     //Day of week
-    //Set Date to Clock
-    data_send[4] = 0x15;     //Date
-    data_send[5] = 0x06;     //Month
-    data_send[6] = 0x18;     //Year
-
-    I2cSendBurst(TINY_RTC_ADR, SLAVE_REG_TIME, 7, data_send);
-
-#endif
-
-
-    int i =0;
-    for(i=0; i<56; i++)
-    {
-        data_get[i] = 0;
-        data_send[i] = i;
-    }
-
-    I2cSendBurst(TINY_RTC_ADR, SLAVE_REG_STORE, 56, data_send);
-
-
-    while(1)
-    {
-        //I2cSendByte(TINY_RTC_ADR, data_send);
-        //SysCtlDelay(1000);   //simulate wait state for answer of the us module
-
-        I2CReceiveBurst(TINY_RTC_ADR, SLAVE_REG_TIME, 7, data_get);
-        //I2CReceiveBurst(TINY_RTC_ADR, SLAVE_REG_STORE, 56, data_get);
-
-        //I2C Acceleromenter Reset
-        halMpuReset();
-
-        SysCtlDelay(1000000);   //simulate wait state for answer of the us module
-
-    }
-}
-*/

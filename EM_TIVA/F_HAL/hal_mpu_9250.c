@@ -17,9 +17,9 @@ void halMpuInit()
 {
     halMpuReset();
     // Delay for Reset-
-    SysCtlDelay(1000000);   //simulate wait state for answer of the us module
+    SysCtlDelay(1000);   //simulate wait state for answer of the us module
     halAccInit();
-    SysCtlDelay(1000000);   //simulate wait state for answer of the us module
+    SysCtlDelay(1000);   //simulate wait state for answer of the us module
     halGyrInit();
     SysCtlDelay(1000000);   //simulate wait state for answer of the us module
     halMagInit();
@@ -77,11 +77,12 @@ void halMagInit()
 
     I2cSendBurst(ACCELGYRO_ADDR, 0x37, 1, &data);
     SysCtlDelay(10000);   //simulate wait state for answer of the us module
-    halCtlWrite_Mag(0);
+    halCtlWrite_Mag(6);
     SysCtlDelay(10000);
 
     halGetMagASA(&asa_x_, &asa_y_, &asa_z_);
 
+    SysCtlDelay(10000);
     halCtlWrite_Mag(2);
     SysCtlDelay(10000);
 }
